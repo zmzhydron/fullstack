@@ -42,9 +42,9 @@ app.use(expressSession({
   cookie: ('name', 'value', { maxAge: 5 * 60 * 1000, secure: false })
 }))
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }))
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '10mb' }))
 
 router.use((req, res, next) => {
   next();
@@ -96,7 +96,6 @@ app.get("/api/doggy", [
     });
   },
   function (req, res, next) {
-    console.log("next~~~");
     res.locals.data = res.locals.data.split(",")[1];
     res.send(res.locals.data);
   }
@@ -111,7 +110,6 @@ router.post("/api/login", async (req, res, next) => {
   let { name, password } = req.body;
   if (name && password) {
     SQL(`select * from user where name like '%${name}%'`).then(({ asyncR, result }) => {
-      console.log(result, '/api/login');
       if (asyncR) {
         let r = result.result[0];
         let { password: sqlpass } = r;
@@ -125,8 +123,8 @@ router.post("/api/login", async (req, res, next) => {
   }
 })
 function shitmanlol(req, res, next) {
-  console.log(req.cookies);
-  console.log(req.session.userinfo, req.sessionID, `session`);
+  // console.log(req.cookies);
+  // console.log(req.session.userinfo, req.sessionID, `session`);
   // req.session = null;
   next();
 }
@@ -144,7 +142,6 @@ app.get('/api/fuckyou', async (req, res, next) => {
   let r = await new Promise((resolve, reject) => {
     db.query("select * from pornstart", (err, result, fields) => {
       result.forEach((item, index) => {
-        console.log(item.name);
       })
       // res.send(result);
       resolve(result);
