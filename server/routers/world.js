@@ -9,7 +9,7 @@ router.get("/hello", (req, res, next) => {
     next(e);
   }
 })
-router.get('/getphoto', (req, res, next) => {
+router.post('/getphoto', (req, res, next) => {
   let file = fs.readFileSync(`../fileupload/11.jpg`);
   console.log(file, '$$$$$$$');
   res.setHeader('Content-Type', 'image/jpeg');

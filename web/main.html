@@ -132,17 +132,19 @@
         }
         let getphoto = document.getElementById("getphoto");
         getphoto.onclick = function () {
-            axios.get("/api/world/getphoto").then(val => {
+            axios.post("/api/world/getphoto").then(val => {
                 // var raw = window.atob(val.data) //解析base64回图片原始的代码
                 // var uint8Array = new Uint8Array(raw.length); //得到原始代码的长度创建强类型的uintArray
                 // for (let i = 0; i < raw.length; i++) {
                 //     uint8Array[i] = raw.charCodeAt(i); //把源代码编译成uinitcode。
                 // }
+                console.log(val.data);
                 let blob = new Blob([val.data]);
 
                 let src = URL.createObjectURL(blob);
-                
-                // let src = 'data:image/png;base64,' + btoa(new Uint8Array(val.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+                console.log(src);
+
+                // let src = 'data:image/png;base64,' + val.data;
                 document.getElementById('ImagePic').src = src;
             })
         };

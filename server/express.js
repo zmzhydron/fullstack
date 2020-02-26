@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 var worldRouter = require("./routers/world");
 var uploadRouter = require("./routers/upload");
 const SQLCOMP = require("./components/sql");
-
+var path = require("path");
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -35,6 +35,10 @@ app.use((req, res, next) => {
   req.zmzSQL = SQL;
   next();
 })
+let src = path.resolve(__dirname, './../web');
+console.log(src, '$$$$$$$');
+
+app.use(express.static(src))
 app.use(expressSession({
   secret: "keyboard cat",
   resave: false,
