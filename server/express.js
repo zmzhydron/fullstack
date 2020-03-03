@@ -42,6 +42,7 @@ let src = path.resolve(__dirname, './../web');
 console.log(src, '$$$$$$$');
 
 app.use(express.static(src))
+// app.use('./dist', express.static(path.resolve(__dirname, './../web/dist')));
 app.use(expressSession({
   secret: "keyboard cat",
   resave: false,

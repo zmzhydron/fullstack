@@ -116,74 +116,31 @@
         setTimeout(loginfn, 300);
         let uperdaasd = document.getElementById("uperdaasd");
         uperdaasd.onchange = function (e) {
-            // let file = e.target.files[0];
-            // console.log(e.target.files);
-            // let blob = new Blob([file]);
-            // let src = URL.createObjectURL(blob);
-            // document.getElementById('ImagePic').src = src;
-            var obj = new FormData();
+            let file = e.target.files[0];
             console.log(e.target.files);
-            for (let value of e.target.files) {
-                obj.append("photos", value);
-            }
-            axios.post('/api/upload', obj, {
-                headers: { "Content-Type": "multipart/form-data" },
-                // responseType: 'blob'
-            }).then(val => {
-                // var src = URL.createObjectURL(val.data);
-                // document.getElementById('ImagePic').src = src;
-                // uperdaasd.value = '';
-            })
+            let blob = new Blob([file]);
+            let src = URL.createObjectURL(blob);
+            document.getElementById('ImagePic').src = src;
+            // var obj = new FormData();
+            // console.log(e.target.files);
+            // for (let value of e.target.files) {
+            //     obj.append("photos", value);
+            // }
+            // axios.post('/api/upload', obj, {
+            //     headers: { "Content-Type": "multipart/form-data" }
+            // }).then(val => {
+            //     uperdaasd.value = '';
+            // })
         }
         let getphoto = document.getElementById("getphoto");
         getphoto.onclick = function () {
-            // axios.post("/api/world/getphoto", {}, {
-            //     // headers: { 'Content-Type': 'blob' },
-            //     // responseType: 'blob'
-            //     responseType: 'arraybuffer'
-            // }).then(val => {
-            //     console.log(val.data)
-            //     console.log(val.data instanceof ArrayBuffer, '~~~~~~~~~');
-            //     // let src = URL.createObjectURL(val.data);
-            //     // document.getElementById('ImagePic').src = src;
-            //     var dv = new DataView(val.data);
-            //     console.log(dv, 'DataView', dv.getInt8(0), String.fromCharCode(dv.getInt8(0)));
-            //     var buffer = [];
-            //     var u8a = new Uint8Array(val.data);
-            //     for (let i = 0; i < u8a.length; i++) {
-            //         // console.log(String.fromCharCode(u8a[i]));
-            //         buffer.push(String.fromCharCode(u8a[i]));
-            //     }
-            //     buffer = buffer.join('');
-            //     let blob = new Blob([buffer]);
-            //     let src = URL.createObjectURL(blob);
-            //     src = 'data:image/png;base64,' + btoa(buffer);
-            //     document.getElementById('ImagePic').src = src;
-            //     // console.log(String.fromCharCode.apply(null, new Uint8Array(val.data)))
-            // })
             axios.post("/api/world/getphoto", {}, {
                 // headers: { 'Content-Type': 'blob' },
-                // responseType: 'blob',
-                // responseType: 'arraybuffer'
+                responseType: 'blob'
             }).then(val => {
-                console.log(val);
-                val.data.forEach(item => {
-                    let { name, preview, userName } = item;
-                    let data = preview.data;
-                    var buffer = [];
-                    var u8a = new Uint8Array(data);
-                    for (let i = 0; i < u8a.length; i++) {
-                        // console.log(String.fromCharCode(u8a[i]));
-                        buffer.push(String.fromCharCode(u8a[i]));
-                    }
-                    buffer = buffer.join('');
-                    let blob = new Blob([buffer]);
-                    let src = URL.createObjectURL(blob);
-                    src = 'data:image/png;base64,' + btoa(buffer);
-                    let img = document.createElement("img");
-                    img.src = src;
-                    document.body.appendChild(img);
-                });
+                console.log(val.data instanceof Blob, '~~~~~~~~~');
+                let src = URL.createObjectURL(val.data);
+                document.getElementById('ImagePic').src = src;
             })
         };
         var b1 = new Blob(["zmz"], { type: "application/json" });
