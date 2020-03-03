@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "rm -rf web/dist/* & webpack & cp ./web/main.html ./web/dist/main.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,15 +14,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.8.6",
+    "babel-loader": "^8.0.6",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "jquery": "^3.4.1",
     "koa-router": "^8.0.6",
     "koa-static": "^5.0.0",
     "koa2": "^2.0.0-alpha.7",
+    "lodash": "^4.17.15",
     "multer": "^1.4.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "supervisor": "^0.12.0",
+    "vue": "^2.6.11",
+    "vue-loader": "^15.9.0",
+    "webpack": "^4.42.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.11"
   }
 }
