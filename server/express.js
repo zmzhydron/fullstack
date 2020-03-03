@@ -9,6 +9,7 @@ var router = express.Router()
 var bodyParser = require('body-parser');
 var worldRouter = require("./routers/world");
 var uploadRouter = require("./routers/upload");
+var compression = require('compression');
 const SQLCOMP = require("./components/sql");
 var path = require("path");
 
@@ -30,9 +31,11 @@ pool.on(`release`, () => {
 // });
 
 const SQL = SQLCOMP.SQL(pool);
+// app.use(compression())
 app.use(cookieParser())
 app.use((req, res, next) => {
   req.zmzSQL = SQL;
+  req.zmzpool = pool;
   next();
 })
 let src = path.resolve(__dirname, './../web');
@@ -116,9 +119,11 @@ router.post("/api/login", async (req, res, next) => {
     SQL(`select * from user where name like '%${name}%'`).then(({ asyncR, result }) => {
       if (asyncR) {
         let r = result.result[0];
-        let { password: sqlpass } = r;
+        let { password: sqlpass, ID } = r;
+        console.log(r, `login`);
         if (password === sqlpass) {
           req.session.name = name;
+          req.session.userid = ID;
           req.session.password = password;
           res.send(r);
         }

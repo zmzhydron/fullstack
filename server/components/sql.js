@@ -29,7 +29,7 @@ module.exports = {
     let queryR = await new Promise((resolve, reject) => {
       connection.query(query, (err, result, fields) => {
         if (err) {
-          console.log(err, query, '查询失败');
+          console.log(err, '查询失败');
           resolve({
             asyncR: false,
             result: err
