@@ -1,5 +1,6 @@
 var webpack = require("webpack");
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: './web/1.js',
@@ -9,10 +10,20 @@ module.exports = {
     path: path.resolve(__dirname, './web/dist'),
   },
   optimization: {
-    splitChunks: {         
+    splitChunks: {
       chunks: 'all',
     },
   },
+  plugins: [
+    // new BundleAnalyzerPlugin(),
+    new CopyWebpackPlugin([
+
+      {
+        from: path.join(__dirname, './web/main.html'),
+        to: path.join(__dirname, './web/dist/main.html'),
+      }
+    ]),
+  ],
   module: {
     rules: [
       // ...(config.dev.useEslint ? [createLintingRule()] : []),
