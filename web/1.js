@@ -22,11 +22,17 @@ var zhanwei = {
   `
 }
 var zhanwei2 = {
+  props: {
+    names: {
+      type: String,
+      default: "zhanwei2"
+    },
+  },
   data: () => {
     return {};
   },
   template: `
-    <h1>我没有位置</h1>
+    <h1>我没有位置{{names}}</h1>
   `
 }
 
@@ -36,7 +42,8 @@ Vue.component("Nigger", {
   data: () => {
     return {
       nigger: {
-        name: "kendralust"
+        name: "kendralust",
+        pwd: 'PWDOFNIGGER'
       },
       dynamicComp: '',
       action: 'doggy',
@@ -70,15 +77,18 @@ Vue.component("Nigger", {
       console.log(this);
     }
   },
+  // <p>my slots :: {{names}}</p>
   components: {
     "NIGA": zhanwei,
+    "NIGAA": zhanwei2,
     // /* webpackChunkName: "zmz" */ 表示加载的模块和主模块平级并且叫zmz.build.js,./zmz.js表示模块在项目里的相对路径，用于webpack打包
     LUST: () => import(/* webpackChunkName: "zmz" */ './zmz.js')
   },
   template: `
     <div>
       <h1>my name is {{nigger.name}} niggerAge:{{nigger.age}} <LUST /></h1>
-      <div :is="dynamicComp.component" :action="action"></div>
+      <div :is="dynamicComp.component" :action="action">
+      </div>
       <button @click="requestComponent">requestComponent</button>
     </div>
     

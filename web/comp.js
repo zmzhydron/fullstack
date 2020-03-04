@@ -7,11 +7,17 @@ var shitman = {
   },
   data: () => {
     return {
-      name: 'stella coxxx'
+      name: 'stella coxxx',
+      name2: "mingzhi zhang"
     }
   },
   template: `
-    <h1>{{name}} likes {{action}}</h1>
+  <div>
+    <h1>
+    {{name}} likes {{action}}
+    </h1>
+    <slot v-bind:names="name2"></slot>
+  </div>
   `
 }
 
