@@ -35,14 +35,17 @@ window.lust = lust;
 Vue.component("Nigger", {
   data: () => {
     return {
-      niggerName: "zhangmingzhi",
+      nigger: {
+        name: "kendralust"
+      },
       dynamicComp: '',
       action: 'doggy',
       showzmz: false,
     }
   },
-  mounted: () => {
-    console.log("@@@@@@@@@@@@");
+  mounted(){
+    window.asdf = this;
+    console.log(window.asdf, '@@@@@@@@@@@@@@@@@@@@');
   },
   methods: {
     requestComponent() {
@@ -51,15 +54,19 @@ Vue.component("Nigger", {
       //   console.log(val, '~~~~~!!!~~~~~~')
       // })
       import(/* webpackChunkName: "shitnigger" */ './comp.js').then(val => {
-        Vue.component('ZMZ', val.default);
-        this.dynamicComp = 'ZMZ';
+        // Vue.component('ZMZ', val.default);
+        this.dynamicComp = {
+          name: "ZMZ",
+          component: val.default
+        }
         // this.showzmz = true;
         // setTimeout(() => {
         // }, 1000);
         // <component :is="dynamicComp"></component>
         console.log(val, '@@@@@@@@@@@@@');
       })
-
+      this.$set(this.nigger, 'age', 32);
+      console.log(this.$data);
       console.log(this);
     }
   },
@@ -70,8 +77,8 @@ Vue.component("Nigger", {
   },
   template: `
     <div>
-      <h1>my name is {{niggerName}} <LUST /></h1>
-      <div :is="dynamicComp" :action="action"></div>
+      <h1>my name is {{nigger.name}} niggerAge:{{nigger.age}} <LUST /></h1>
+      <div :is="dynamicComp.component" :action="action"></div>
       <button @click="requestComponent">requestComponent</button>
     </div>
     
