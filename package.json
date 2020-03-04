@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf web/dist/* & webpack & cp ./web/main.html ./web/dist/main.html",
+    "build": "rm -rf web/dist/* & webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +20,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
     "cookie-session": "^1.4.0",
+    "copy-webpack-plugin": "^5.1.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "gm": "^1.23.1",
