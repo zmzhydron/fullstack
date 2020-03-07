@@ -15,12 +15,19 @@ router.post('/getphoto', (req, res, next) => {
   // res.setHeader('Content-Type', 'image/jpeg');
   // res.setHeader('Content-Type', 'blob');
   // res.setHeader("responseType",'blob');
-  req.zmzSQL(`select * from photo`).then(val => {
-    let { result, asyncR } = val;
-    if (asyncR) {
-      res.send(result.result);
+  req.zmzpool.query(`select p.id, p.userId, p.userName, p.addDate, p.likeNum, s.preview from photo p inner join photopreview s where s.id=p.photohash`, (err, r, f) => {
+    if (err) {
+      console.log(err, '~~~~~~~~~~');
     }
-  })
+    console.log(r);
+    res.send(r);
+  });
+  // req.zmzSQL(`select * from photo`).then(val => {
+  //   let { result, asyncR } = val;
+  //   if (asyncR) {
+  //     res.send(result.result);
+  //   }
+  // })
   // res.send("Jaguar's Special Vehicle Operations has transformed this F-PACE into  utility that's ready to pounce on its prey. With a 5.0L Supercharged V8 with 550hp, the F-PACE SVR is sure to put a smile on anyones face, especially with the exhilarating exhaust note");
 })
 module.exports = router;

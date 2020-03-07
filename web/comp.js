@@ -16,7 +16,6 @@ var shitman = {
     <h1>
     {{name}} likes {{action}}
     </h1>
-    <slot v-bind:names="name2"></slot>
   </div>
   `
 }

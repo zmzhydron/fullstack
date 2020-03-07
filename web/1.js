@@ -45,16 +45,80 @@ Vue.component("Nigger", {
         name: "kendralust",
         pwd: 'PWDOFNIGGER'
       },
+      smallimglist: [],
+      bigPhoto: {},
+      currentSmallPhoto: {},
       dynamicComp: '',
       action: 'doggy',
       showzmz: false,
     }
   },
-  mounted(){
-    window.asdf = this;
-    console.log(window.asdf, '@@@@@@@@@@@@@@@@@@@@');
+  mounted() {
   },
   methods: {
+    likeFn(type = 'up') {
+      let { likenum, id } = this.bigPhoto;
+      if (type === 'up') {
+        likenum = likenum ? likenum + 1 : 1;
+
+      } else {
+        likenum = likenum ? likenum - 1 : -1;
+      }
+      axios.post("/api/UpdateLikes", { id, likenum }).then(val => {
+        console.log(val, '~~~~~~~~~~~');
+        this.bigPhoto.likenum = val.data.likenum;
+      })
+    },
+    getBigPhoto(obj) {
+      axios.post("/api/getBIGPHOTO", { id: obj.id }, {
+        // headers: { 'Content-Type': 'blob' },
+        // responseType: 'blob',
+        // responseType: 'arraybuffer'
+      }).then(val => {
+        console.log(val, obj);
+        var u8a = new Uint8Array(val.data.buffer.data);
+        let buffer = [];
+        for (let i = 0; i < u8a.length; i++) {
+          buffer.push(String.fromCharCode(u8a[i]));
+        }
+        buffer = buffer.join('');
+        let blob = new Blob([buffer]);
+        let src = URL.createObjectURL(blob);
+        src = 'data:image/png;base64,' + btoa(buffer);
+        this.bigPhoto = {
+          ...val.data,
+          src,
+        }
+      })
+    },
+    getSmallPhoto() {
+      axios.post("/api/world/getphoto", {}, {
+        // headers: { 'Content-Type': 'blob' },
+        // responseType: 'blob',
+        // responseType: 'arraybuffer'
+      }).then(val => {
+        val.data.forEach(item => {
+          let { name, preview, userName, id } = item;
+          let data = preview.data;
+          var buffer = [];
+          var u8a = new Uint8Array(data);
+          for (let i = 0; i < u8a.length; i++) {
+            // console.log(String.fromCharCode(u8a[i]));
+            buffer.push(String.fromCharCode(u8a[i]));
+          }
+          buffer = buffer.join('');
+          let blob = new Blob([buffer]);
+          let src = URL.createObjectURL(blob);
+          src = 'data:image/png;base64,' + btoa(buffer);
+          this.smallimglist.push({
+            src,
+            name,
+            id,
+            userName,
+          })
+        });
+      })
+    },
     requestComponent() {
       console.log('requestComponent');
       // import(/* webpackChunkName: "shitnigger" */ './comp').then(val => {
@@ -86,10 +150,23 @@ Vue.component("Nigger", {
   },
   template: `
     <div>
-      <h1>my name is {{nigger.name}} niggerAge:{{nigger.age}} <LUST /></h1>
+      <p>my name is {{nigger.name}} niggerAge:{{nigger.age}} <LUST /></p>
       <div :is="dynamicComp.component" :action="action">
       </div>
+      <div className="smallimg">
+          <img @click="getBigPhoto(item)" :src="item.src" alt="" className="src" v-for="item of smallimglist" :key="item.id"/>
+      </div>
       <button @click="requestComponent">requestComponent</button>
+      <button @click="getSmallPhoto">getSmallPhoto</button>
+      <div class="bigimgage">
+        <p>
+          likes: {{bigPhoto.likenum}}
+          <button @click="likeFn('up')">++like</button>
+          <button @click="likeFn('down')">--like</button>
+        </p>
+      <img :src="bigPhoto.src" id="bigpptpt" />
+      </div>
+
     </div>
     
   `

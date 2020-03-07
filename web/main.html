@@ -28,6 +28,10 @@
             padding: 30px;
             font-size: 24px;
         }
+
+        #bigpptpt {
+            width: 800px;
+        }
     </style>
 </head>
 
@@ -38,25 +42,20 @@
         <input type="text" value="" id="loginpassword" placeholder="password" />
         <button id="register">register</button>
     </div>
-    <button id="aaa">fuckyou</button>
-    <button id="bbb">bbb</button>
-    <button id="world">world</button>
     <div class="loginctn">
         <input type="text" value="lust" id="id" placeholder="id" />
         <input type="text" value="123456" id="password" placeholder="password" />
         <button id="login">login</button>
     </div>
-
-    <div id="aaaaaaaa"></div>
+    <!-- <div id="aaaaaaaa"></div>
     <div class="search">
         <input type="text" value="" id="searchname" placeholder="id" />
         <input type="text" value="" id="searchvalue" placeholder="password" />
         <button id="search">search</button>
-    </div>
+    </div> -->
     <div class="updateCTn">
         <input type="file" multiple=true id="uperdaasd">
         <button id="getphoto">getphoto</button>
-
     </div>
     <img src="" id="ImagePic" />
     <div id="app"></div>
@@ -73,35 +72,35 @@
                 console.log(val);
             })
         }
-        let search = document.getElementById("search");
-        search.onclick = function () {
-            axios.post("/api/search", {
-                searchname: document.getElementById('searchname').value,
-                searchvalue: document.getElementById('searchvalue').value,
-            }).then(val => {
-                console.log(val);
-            })
-        }
-        let world = document.getElementById("world");
-        world.onclick = function () {
-            axios.get("/api/world/hello").then(val => {
-                console.log(val);
-            })
-        }
-        let aaa = document.getElementById("aaa");
-        aaa.onclick = function () {
-            console.log("@@@@@@@@@@");
-            axios.get("/api/fuckyou").then(val => {
-                console.log(val);
-            })
-        }
-        let bbb = document.getElementById("bbb");
-        bbb.onclick = function () {
-            axios.get("/api/doggy").then(val => {
-                let { name, password } = val.data;
-                document.getElementById("aaaaaaaa").innerHTML = `<h1>${name}, password${password}</h1>`;
-            })
-        }
+        // let search = document.getElementById("search");
+        // search.onclick = function () {
+        //     axios.post("/api/search", {
+        //         searchname: document.getElementById('searchname').value,
+        //         searchvalue: document.getElementById('searchvalue').value,
+        //     }).then(val => {
+        //         console.log(val);
+        //     })
+        // }
+        // let world = document.getElementById("world");
+        // world.onclick = function () {
+        //     axios.get("/api/world/hello").then(val => {
+        //         console.log(val);
+        //     })
+        // }
+        // let aaa = document.getElementById("aaa");
+        // aaa.onclick = function () {
+        //     console.log("@@@@@@@@@@");
+        //     axios.get("/api/fuckyou").then(val => {
+        //         console.log(val);
+        //     })
+        // }
+        // let bbb = document.getElementById("bbb");
+        // bbb.onclick = function () {
+        //     axios.get("/api/doggy").then(val => {
+        //         let { name, password } = val.data;
+        //         document.getElementById("aaaaaaaa").innerHTML = `<h1>${name}, password${password}</h1>`;
+        //     })
+        // }
         let login = document.getElementById("login");
         let loginfn = function () {
             axios.post("/api/login", {
@@ -112,7 +111,7 @@
                 document.getElementById("currentUser").innerHTML = data.name + " adddate: " + data.addDate;
             })
         }
-        login.onclick = loginfn();
+        login.onclick = loginfn;
         setTimeout(loginfn, 300);
         let uperdaasd = document.getElementById("uperdaasd");
         uperdaasd.onchange = function (e) {
@@ -161,34 +160,11 @@
             //     document.getElementById('ImagePic').src = src;
             //     // console.log(String.fromCharCode.apply(null, new Uint8Array(val.data)))
             // })
-            axios.post("/api/world/getphoto", {}, {
-                // headers: { 'Content-Type': 'blob' },
-                // responseType: 'blob',
-                // responseType: 'arraybuffer'
-            }).then(val => {
-                console.log(val);
-                val.data.forEach(item => {
-                    let { name, preview, userName } = item;
-                    let data = preview.data;
-                    var buffer = [];
-                    var u8a = new Uint8Array(data);
-                    for (let i = 0; i < u8a.length; i++) {
-                        // console.log(String.fromCharCode(u8a[i]));
-                        buffer.push(String.fromCharCode(u8a[i]));
-                    }
-                    buffer = buffer.join('');
-                    let blob = new Blob([buffer]);
-                    let src = URL.createObjectURL(blob);
-                    src = 'data:image/png;base64,' + btoa(buffer);
-                    let img = document.createElement("img");
-                    img.src = src;
-                    document.body.appendChild(img);
-                });
-            })
+
         };
         var b1 = new Blob(["zmz"], { type: "application/json" });
         let load = document.getElementById("load");
-        load.onclick = function(){
+        load.onclick = function () {
             console.log(lust);
             lust();
         }
