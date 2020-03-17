@@ -39,6 +39,16 @@ router.post('/upload', multerInstance.array('photos'), async (req, res, next) =>
   let insertList = [];
   let existList = [];
   let photoBufferList = [];
+  // 当前人员个人的上传文件价，没有就创建。
+  let personFolderPath = path.resolve(__dirname, '../../../fileupload/' + req.session.name + '/');
+  let personFileExist = fs.existsSync(personFolderPath);
+  if (!personFileExist) {
+    let r = fs.mkdirSync(personFolderPath);
+    if (r) {
+      res.send("创建私人文件夹失败，返回");
+      return false;
+    }
+  }
   for (let file of req.files) {
     let { originalname, mimetype: type, size, buffer } = file;
     hash.update(file.buffer);
@@ -72,10 +82,10 @@ router.post('/upload', multerInstance.array('photos'), async (req, res, next) =>
         //         encoding: '7bit',
         //           mimetype: 'text/plain',
         // size: 139
-        console.log(photoBuffer);
         let { userid, name } = req.session;
         let newname = new Date().valueOf().toString().substr(0, 5) + originalname;
-        fs.writeFileSync(path.resolve(__dirname, '../../../fileupload/' + newname), buffer);
+        console.log(personFolderPath + '/' + newname, `personFolderPath`)
+        fs.writeFileSync(personFolderPath + '/' + newname, buffer);
         // insertList.push({
         //   preview: photoBuffer,
         //   photohash: hashname,
@@ -127,10 +137,16 @@ router.post("/getBIGPHOTO", (req, res, next) => {
     if (err) {
       console.log(err, '~~~~~~~~~~');
     }
-    let src = path.resolve(__dirname, '../../../fileupload/' + r[0].name)
+    let src = path.resolve(__dirname, '../../../fileupload/' + req.session.name) + '/' + r[0].name;
     console.log(r[0].name, src)
     fs.readFile(src, (err, buff) => {
       console.log(buff);
+      // 同时更新查看数量。
+      let viewCount = r[0].viewCount || 0;
+      viewCount++;
+      req.zmzpool.query(`update photo set viewCount=${viewCount} where id=${id} `, (err, r, f) => {
+
+      })
       res.send({
         ...r[0],
         buffer: buff
@@ -149,7 +165,6 @@ router.post("/UpdateLikes", (req, res, next) => {
       likenum
     });
   })
-
 })
 
 module.exports = router;

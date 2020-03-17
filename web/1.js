@@ -76,15 +76,15 @@ Vue.component("Nigger", {
         // responseType: 'arraybuffer'
       }).then(val => {
         console.log(val, obj);
-        var u8a = new Uint8Array(val.data.buffer.data);
+        var buffer1 = new Uint8Array(val.data.buffer.data);
         let buffer = [];
-        for (let i = 0; i < u8a.length; i++) {
-          buffer.push(String.fromCharCode(u8a[i]));
+        for(let index in buffer1){
+          buffer.push(String.fromCharCode(buffer1[index]));
         }
         buffer = buffer.join('');
-        let blob = new Blob([buffer]);
-        let src = URL.createObjectURL(blob);
-        src = 'data:image/png;base64,' + btoa(buffer);
+        // let blob = new Blob([buffer]);
+        // let src = URL.createObjectURL(blob);
+        let src = 'data:image/png;base64,' + btoa(buffer);
         this.bigPhoto = {
           ...val.data,
           src,
@@ -97,19 +97,34 @@ Vue.component("Nigger", {
         // responseType: 'blob',
         // responseType: 'arraybuffer'
       }).then(val => {
+        // let blob = new Blob([val.data]);
+        // let src = URL.createObjectURL(blob);
+        // src = 'data:image/png;base64,' + btoa(val.data);
+        // console.log(val.data);
+        // let buffer = [];
+
+        // let buffer1 = new Uint8Array(val.data);
+        // for (let index in buffer1) {
+        //   // buffer1[index] = val.data.charCodeAt(index);
+        //   buffer.push(String.fromCharCode(buffer1[index]));
+        // }
+        // console.log(buffer1);
+        // // for (let i = 0; i < buffer1.length; i++) {
+        // //   buffer.push(String.fromCharCode(buffer1[i]));
+        // // }
+        // buffer = buffer.join('');
+        // console.log(buffer);
+        // document.getElementById('bigpptpt').src = 'data:image/png;base64,' + btoa(buffer);
+
         val.data.forEach(item => {
           let { name, preview, userName, id } = item;
           let data = preview.data;
           var buffer = [];
-          var u8a = new Uint8Array(data);
-          for (let i = 0; i < u8a.length; i++) {
-            // console.log(String.fromCharCode(u8a[i]));
-            buffer.push(String.fromCharCode(u8a[i]));
+          for (let i = 0; i < data.length; i++) {
+            buffer.push(String.fromCharCode(data[i]));
           }
           buffer = buffer.join('');
-          let blob = new Blob([buffer]);
-          let src = URL.createObjectURL(blob);
-          src = 'data:image/png;base64,' + btoa(buffer);
+          let src = 'data:image/png;base64,' + btoa(buffer);
           this.smallimglist.push({
             src,
             name,
@@ -150,7 +165,7 @@ Vue.component("Nigger", {
   },
   template: `
     <div>
-      <p>my name is {{nigger.name}} niggerAge:{{nigger.age}} <LUST /></p>
+      <p>my name iS:{{nigger.name}} niggerAge:{{nigger.age}} <LUST /></p>
       <div :is="dynamicComp.component" :action="action">
       </div>
       <div className="smallimg">
@@ -161,6 +176,7 @@ Vue.component("Nigger", {
       <div class="bigimgage">
         <p>
           likes: {{bigPhoto.likenum}}
+          viewCount: {{bigPhoto.viewCount}}
           <button @click="likeFn('up')">++like</button>
           <button @click="likeFn('down')">--like</button>
         </p>

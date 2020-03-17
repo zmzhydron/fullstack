@@ -10,18 +10,20 @@ router.get("/hello", (req, res, next) => {
   }
 })
 router.post('/getphoto', (req, res, next) => {
-  // let file = fs.readFileSync(`../fileupload/11.jpg`);
-  // console.log(file, '$$$$$$$');
-  // res.setHeader('Content-Type', 'image/jpeg');
-  // res.setHeader('Content-Type', 'blob');
-  // res.setHeader("responseType",'blob');
-  req.zmzpool.query(`select p.id, p.userId, p.userName, p.addDate, p.likeNum, s.preview from photo p inner join photopreview s where s.id=p.photohash`, (err, r, f) => {
+  req.zmzpool.query(`select p.id, p.userId, p.userName, p.addDate, p.likeNum, s.preview from photo p inner join photopreview s where s.id=p.photohash AND p.userName="${req.session.name}"`, (err, r, f) => {
     if (err) {
       console.log(err, '~~~~~~~~~~');
     }
     console.log(r);
     res.send(r);
   });
+  // let src = path.resolve(__dirname, '../../../fileupload/11.jpg');
+  // let file = fs.readFileSync(src);
+  // // res.setHeader('Content-Type', 'blob');
+  // res.send(file);
+  // console.log(file, '$$$$$$$');
+  // res.setHeader('Content-Type', 'image/jpeg');
+  // res.setHeader("responseType",'blob');
   // req.zmzSQL(`select * from photo`).then(val => {
   //   let { result, asyncR } = val;
   //   if (asyncR) {

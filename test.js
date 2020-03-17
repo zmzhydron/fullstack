@@ -8,14 +8,18 @@ var path = require("path");
 var gm = require("gm").subClass({ imageMagick: true });
 
 
-const buf = Buffer.from('runoob', 'ascii');
+var name = 'zmz';
+var buffer = Buffer.alloc(name.length, name);
+console.log(buffer)
 
-hash.update(buf);
-console.log(hash.digest('hex'), '~~~~~~~~');
+// const buf = Buffer.from('runoob', 'ascii');
 
-var src = path.resolve(__dirname, './1234.jpg');
-console.log(src, '@@@@@@@@@@@@@');
+// hash.update(buf);
+// console.log(hash.digest('hex'), '~~~~~~~~');
 
-gm("./aaa.png").write(src, err => {
-  console.log(err);
-})
+// var src = path.resolve(__dirname, './1234.jpg');
+// console.log(src, '@@@@@@@@@@@@@');
+
+// gm("./aaa.png").write(src, err => {
+//   console.log(err);
+// })
