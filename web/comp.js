@@ -15,6 +15,7 @@ var shitman = {
   <div>
     <h1>
     {{name}} likes {{action}}
+    <slot slotname="stockings"></slot>
     </h1>
   </div>
   `

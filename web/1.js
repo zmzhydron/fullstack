@@ -167,6 +167,7 @@ Vue.component("Nigger", {
     <div>
       <p>my name iS:{{nigger.name}} niggerAge:{{nigger.age}} <LUST /></p>
       <div :is="dynamicComp.component" :action="action">
+        <span>{{slotname}}</span>
       </div>
       <div className="smallimg">
           <img @click="getBigPhoto(item)" :src="item.src" alt="" className="src" v-for="item of smallimglist" :key="item.id"/>
