@@ -1,0 +1,11 @@
+普通函数
+init --运行defineproperty----运行wachter get---设置dep.target为当前执行变量---运行函数---读取到注册的变量---
+执行defineproperty的get---get执行dep.depen把dep.target注册进dep.list去---剔除当前执行变量
+update -- defineproperty set，执行dep.update,遍历dep.list中的watcher执行里面的get函数;
+hint:::使用 Set 来去重对象。
+
+computed
+
+init----运行vue.computed 查看是否有computed注册 ---- 如果有--- 根据每个computed独立生成一个watcher---
+这个watcher的get储存了computed计算表达式和这个computed是否需要重新求职的dirty属性 --- 注册这个computed的definedproperty的get 和 set----
+get的时候判断computed 的watcher是否dirty，dirty求职，不dirty返回值 还有根据当前读取computed的watcher注册dep
