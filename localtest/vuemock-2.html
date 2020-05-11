@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="diva"></div>
+  <div id="divb"></div>
+  <script>
+    let targetArray = [];
+    function setTarget(target){
+      targetArray.push(target);
+      Dep.target = target;
+    }
+    function popTarget() {
+      targetArray.pop();
+      Dep.target = targetArray[targetArray.length - 1];
+    }
+    function OB(obj){
+      Object.keys(obj).forEach(key => {
+        let value = obj[key];
+        let dp = new Dep();
+        Object.defineProperty(obj, key, {
+          get(){
+            dp.depend();
+            return value;
+          },
+          set(val){
+            if(val !== value){
+              value = val;
+              dp.notify(val);
+            }
+          }
+        })
+      })
+    }
+    class Dep{
+      constructor(){
+        this.subs = new Set();
+      }
+      depend(){
+        if(Dep.target){
+          Dep.target.addDeps(this);
+        }
+      }
+      addSubs(target){
+        this.subs.add(target);
+      }
+      notify(val){
+        console.log(this.subs, `subs`, val);
+        this.subs.forEach(sub => {
+          if(sub.computed){
+            // sub.dirty = true;
+          }
+          sub.update();
+        })
+      }
+    }
+    class Watcher {
+      constructor(cb, pps = {}){
+        let { computed = false } = pps;
+        this.computed = computed;
+        this.value = "";
+        this.dirty = true;
+        this.cb = cb;
+        this.deps = new Set();;
+        this.get();
+      }
+      get(){
+        setTarget(this);
+        this.value = this.cb();
+        console.log(`Watcher GET`, this.value);
+        popTarget();
+      }
+      addDeps(dp){
+        console.log(dp, `addDeps`);
+        this.deps.add(dp);
+        dp.addSubs(this);
+      }
+      evaluate(){
+        this.dirty = false;
+        this.get();
+      }
+      depend(){
+        this.deps.forEach(dep => {
+          dep.depend();
+        })
+      }
+      update(){
+        this.get();
+      }
+    }
+    function computed(obj){
+      var objHolder = Object.create(null);
+      var wtobj = {};
+      let keys = Object.keys(obj).forEach(key => {
+        let dep = new Dep();
+        let getter = obj[key];
+        let value = '';
+        let wt = new Watcher(getter, {computed: true});
+        wtobj[key]=wt;
+        Object.defineProperty(objHolder, key, {
+          get(){
+            let wt = wtobj[key];
+            if(wt){
+              if(wt.dirty){
+                debugger;
+                wt.evaluate();
+              }
+              console.log("Dep.target Of Computed", Dep.target, wt);
+              if(Dep.target){
+                wt.depend();
+              }
+            }
+            return wt.value;
+          },
+          // set(newValue){
+            // tobe continue            
+          // }
+        })
+      })
+      return objHolder;
+    }
+    var me = {
+      name: 'zmz',
+      age: 32
+    }
+
+    OB(me);
+    var computedObj = computed({
+      'fullname': () => {
+        console.log(`computed of fullname`, me.name);
+        return me.name + " of wakanda";
+      },
+      // "choice": () => {
+      //   return me.age + 'of chiice'
+      // }
+    })
+    var w2 = new Watcher(() => {
+    console.log("W2 watcher");
+    document.getElementById("divb").innerHTML = `
+    age:${me.age} fullname ${computedObj.fullname}
+    `
+    })
+    window.me = me;
+  </script>
+</body>
+</html>
